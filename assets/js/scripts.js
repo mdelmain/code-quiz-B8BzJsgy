@@ -1,3 +1,5 @@
+var rootEl = document.querySelector(".game");
+var currentQuestionId = 0;
 var questionlist = [
   {
     question: "Commonly used data types DO NOT include:",
@@ -8,48 +10,44 @@ var questionlist = [
     correct: "alerts",
   },
   {
-    question: "test211",
-    answer1: "answer211",
-    answer2: "answer212",
-    answer3: "answer213",
-    answer4: "answer213",
+    question: "The condition in an if / else statement is enclosed with_______.",
+    answer1: "quotes",
+    answer2: "curly brackets",
+    answer3: "parenthesis",
+    answer4: "square brackets",
+    correct: "parenthesis"
   },
   {
-    question: "test311",
-    answer1: "answer311",
-    answer2: "answer312",
-    answer3: "answer313",
-    answer4: "answer313",
+    question: "Arrays in JavaScript can be used to store________.",
+    answer1: "numbers and strings",
+    answer2: "other arrays",
+    answer3: "booleans",
+    answer4: "all of the above",
+    correct: "all of the above",
   },
   {
-    question: "test111",
-    answer1: "answer111",
-    answer2: "answer112",
-    answer3: "answer113",
-    answer4: "answer113",
+    question: "String values must be enclosed within ____ when being assigned to variables.",
+    answer1: "commas",
+    answer2: "curly brackets",
+    answer3: "quotes",
+    answer4: "parenthesis",
+    correct: "quotes",
   },
   {
-    question: "test111",
-    answer1: "answer111",
-    answer2: "answer112",
-    answer3: "answer113",
-    answer4: "answer113",
-  },
-  {
-    question: "test111",
-    answer1: "answer111",
-    answer2: "answer112",
-    answer3: "answer113",
-    answer4: "answer113",
+    question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+    answer1: "JavaScript",
+    answer2: "terminal/bash",
+    answer3: "for loops",
+    answer4: "console.logs",
+    correct: "console.logs",
   },
 ]
 document.querySelector("#start").addEventListener("click", function() {
-  var rootEl = document.querySelector(".game");
   rootEl.textContent = "";
   timer();
   createQuestionElements(rootEl);
-  displayQuestions(rootEl, questionlist[0]);
-
+  displayQuestions(rootEl, questionlist[currentQuestionId]);
+  
 });
 
 function timer() {
@@ -68,6 +66,7 @@ function timer() {
   }, 1000);
 }
 
+
 function createQuestionElements(rootEl) {
   var question = document.createElement("h2");
   question.id = "question";
@@ -85,7 +84,39 @@ function createQuestionElements(rootEl) {
   answer4.id = "answer4"
   answer4.className = "answer"
   rootEl.append(answer1,answer2,answer3,answer4);
-};
+ 
+  var checkAnswer = function () {
+    var displayAnswer = document.createElement("p");
+    rootEl.appendChild(displayAnswer);
+    if (this.textContent === questionlist[currentQuestionId].correct) {
+      console.log(questionlist[currentQuestionId].correct)
+      rootEl.querySelector("p").textContent = "Correct!";
+      setTimeout(() => {
+        rootEl.querySelector("p").textContent = "";
+        displayQuestions(rootEl, questionlist[currentQuestionId]);
+        ++currentQuestionId;
+        displayQuestions(rootEl, questionlist[currentQuestionId]);
+      }, 2000);
+    } else {
+      console.log("wrong")
+      rootEl.querySelector("p").textContent = "Wrong!";
+      setTimeout(() => {
+        rootEl.querySelector("p").textContent = "";
+        displayQuestions(rootEl, questionlist[currentQuestionId]);
+        ++currentQuestionId;
+        displayQuestions(rootEl, questionlist[currentQuestionId]);
+      }, 2000); 
+   }
+
+  };
+  answer1.onclick=checkAnswer;
+  answer2.onclick=checkAnswer;
+  answer3.onclick=checkAnswer;
+  answer4.onclick=checkAnswer;
+
+  
+  
+}
 
 function displayQuestions(rootEl, question) {
   rootEl.querySelector("#question").textContent = question.question;
@@ -93,5 +124,5 @@ function displayQuestions(rootEl, question) {
   rootEl.querySelector("#answer2").textContent = question.answer2;
   rootEl.querySelector("#answer3").textContent = question.answer3;
   rootEl.querySelector("#answer4").textContent = question.answer4;
-}
+};
 
