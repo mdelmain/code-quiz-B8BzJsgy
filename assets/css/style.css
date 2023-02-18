@@ -11,3 +11,16 @@ nav{
 #scores {
     color: blueviolet;
 }
+
+main p {
+    font-size: 25px;
+}
+
+main button {
+    font-size: 25px;
+}
+
+.answer {
+    display: block;
+    font-size: 25px;
+}
