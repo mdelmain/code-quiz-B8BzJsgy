@@ -1,10 +1,11 @@
 var questionlist = [
   {
-    question: "test111",
-    answer1: "answer111",
-    answer2: "answer112",
-    answer3: "answer113",
-    answer4: "answer113",
+    question: "Commonly used data types DO NOT include:",
+    answer1: "strings",
+    answer2: "booleans",
+    answer3: "alerts",
+    answer4: "numbers",
+    correct: "alerts",
   },
   {
     question: "test211",
@@ -47,7 +48,8 @@ document.querySelector("#start").addEventListener("click", function() {
   rootEl.textContent = "";
   timer();
   createQuestionElements(rootEl);
-  displayQuestions(rootEl);
+  displayQuestions(rootEl, questionlist[0]);
+
 });
 
 function timer() {
@@ -67,7 +69,7 @@ function timer() {
 }
 
 function createQuestionElements(rootEl) {
-  var question = document.createElement("h1");
+  var question = document.createElement("h2");
   question.id = "question";
   rootEl.appendChild(question);
   var answer1  = document.createElement("button");
@@ -85,6 +87,11 @@ function createQuestionElements(rootEl) {
   rootEl.append(answer1,answer2,answer3,answer4);
 };
 
-function displayQuestions() {
-  console.log(questionlist[1].question);
+function displayQuestions(rootEl, question) {
+  rootEl.querySelector("#question").textContent = question.question;
+  rootEl.querySelector("#answer1").textContent = question.answer1;
+  rootEl.querySelector("#answer2").textContent = question.answer2;
+  rootEl.querySelector("#answer3").textContent = question.answer3;
+  rootEl.querySelector("#answer4").textContent = question.answer4;
 }
+
