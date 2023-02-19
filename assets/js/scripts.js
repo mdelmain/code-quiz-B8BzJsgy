@@ -112,7 +112,7 @@ function createQuestionElements(rootEl) {
         ++currentQuestionId;
         displayQuestions(rootEl, questionlist[currentQuestionId]);
       }
-    }, 2000);
+    }, 100);
   };
   answer1.onclick = checkAnswer;
   answer2.onclick = checkAnswer;
@@ -129,6 +129,33 @@ function displayQuestions(rootEl, question) {
 }
 
 function gameover() {
-  var done = document.createElement("h1");
-  rootEl.appendChild(done);
+  rootEl.appendChild(document.createElement("h1"));
+  rootEl.querySelector("h1").textContent = "Game Over!";
+  rootEl.appendChild(document.createElement("p"));
+  rootEl.querySelector("p").textContent = "Your final score is " + secondsLeft;
+  var formEl = document.createElement("form");
+  rootEl.appendChild(formEl);
+  var input = document.createElement("input");
+  input.name = "initials";
+  var label= document.createElement("label");
+  label.textContent = "Enter initials";
+  var submit = document.createElement("input");
+  submit.type = "submit";
+  submit.value = "Submit";
+  formEl.appendChild(label);
+  formEl.appendChild(input);
+  formEl.appendChild(submit);
+  formEl.addEventListener("submit", submitResponse);
+}
+
+function submitResponse(event) {
+  event.preventDefault();
+  var initials = event.target.elements.initials.value;
+  var userscores = {
+    name: initials,
+    score: secondsLeft 
+  };
+  localStorage.setItem("userscores", JSON.stringify(userscores));
+  //rootEl.appendChild(document.createElement("ol"));
+  window.open("./viewscores.html")
 }
