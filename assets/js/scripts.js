@@ -151,11 +151,16 @@ function gameover() {
 function submitResponse(event) {
   event.preventDefault();
   var initials = event.target.elements.initials.value;
-  var userscores = {
+  var userscore = {
     name: initials,
     score: secondsLeft 
   };
+  var userscores = JSON.parse(localStorage.getItem("userscores"));
+  if (userscores === null){
+    userscores = [];
+  }
+  userscores.push(userscore);
   localStorage.setItem("userscores", JSON.stringify(userscores));
-  //rootEl.appendChild(document.createElement("ol"));
   window.open("./viewscores.html")
 }
+
