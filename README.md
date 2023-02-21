@@ -39,6 +39,7 @@ THEN I can save my initials and score
 
 The following image shows the web application's appearance and functionality:
 
-![code quiz](/assets/images/Screenshot-code-quiz-1.png)
-![code quiz](/assets/images/Screenshot-code-quiz-2.png)
-![code quiz](/assets/images/Screenshot-code-quiz-3.png)
+![code quiz3](/assets/images/Screenshot-code-quiz-3.png)
+![code quiz2](/assets/images/Screenshot-code-quiz-2.png)
+![code quiz1](/assets/images/Screenshot-code-quiz-1.png)
+
