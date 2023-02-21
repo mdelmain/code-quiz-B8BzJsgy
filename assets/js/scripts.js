@@ -42,33 +42,31 @@ var questionlist = [
     answer1: "JavaScript",
     answer2: "terminal/bash",
     answer3: "for loops",
-    answer4: "console.logs",
-    correct: "console.logs",
+    answer4: "console.log",
+    correct: "console.log",
   },
 ];
+
+// when start button is clicked calling functions to start timer, create html elements and display questions
 document.querySelector("#start").addEventListener("click", function () {
   rootEl.textContent = "";
   timer();
   createQuestionElements(rootEl);
-  displayQuestions(rootEl, questionlist[currentQuestionId]);
+  displayQuestion(rootEl, questionlist[currentQuestionId]);
 });
 
 function timer() {
   var timerEl = document.getElementById("countdown");
+
   // seconds at the start of the game
   secondsLeft = 75;
 
-  var countdown = setInterval(function () {
+  // clear timer at zero, display time in nav bar
+  var countdownId = setInterval(function () {
     if (secondsLeft < 1) {
-      clearInterval(countdown);
+      clearInterval(countdownId);
       timerEl.textContent = "";
-    }
-    if (secondsLeft === 0) {
-      clearInterval(countdown);
-      console.log("game over");
-    }
-    if (currentQuestionId === 4) {
-      clearInterval(countdown);
+      gameover(rootEl);
     } else {
       timerEl.textContent = "Time: " + secondsLeft;
       secondsLeft--;
@@ -76,51 +74,74 @@ function timer() {
   }, 1000);
 }
 
+// create html elements for question and answers 
 function createQuestionElements(rootEl) {
   var question = document.createElement("h2");
   question.id = "question";
   rootEl.appendChild(question);
+
   var answer1 = document.createElement("button");
   answer1.id = "answer1";
   answer1.className = "answer";
+
   var answer2 = document.createElement("button");
   answer2.id = "answer2";
   answer2.className = "answer";
+
   var answer3 = document.createElement("button");
   answer3.id = "answer3";
   answer3.className = "answer";
+
   var answer4 = document.createElement("button");
   answer4.id = "answer4";
   answer4.className = "answer";
+
   rootEl.append(answer1, answer2, answer3, answer4);
 
+  // checks answers to questions and displays "correct" or "wrong", if  wrong answer selected, subtracts 10 seconds from the timer
   var checkAnswer = function () {
+    disableAnswerButtons(rootEl);
     var displayAnswer = document.createElement("p");
     rootEl.appendChild(displayAnswer);
+    
     if (this.textContent === questionlist[currentQuestionId].correct) {
-      rootEl.querySelector("p").textContent = "Correct!";
+      displayAnswer.textContent = "Correct!";
     } else {
-      rootEl.querySelector("p").textContent = "Wrong!";
+      displayAnswer.textContent = "Wrong!";
       secondsLeft -= 10;
     }
+
+  // set timeout to 1.5 seconds after answer selected, starts gameover function after the last question
     setTimeout(() => {
-      rootEl.querySelector("p").textContent = "";
+      displayAnswer.remove();
       if (currentQuestionId === questionlist.length-1) {
-        rootEl.textContent = "";
-        gameover();
+        gameover(rootEl);
       } else {
         ++currentQuestionId;
-        displayQuestions(rootEl, questionlist[currentQuestionId]);
+        displayQuestion(rootEl, questionlist[currentQuestionId]);
       }
-    }, 100);
+      enableAnswerButtons(rootEl);
+    }, 1500);
   };
+
+  // runs check answer function when answer selected
   answer1.onclick = checkAnswer;
   answer2.onclick = checkAnswer;
   answer3.onclick = checkAnswer;
   answer4.onclick = checkAnswer;
 }
 
-function displayQuestions(rootEl, question) {
+// disables multiple answers from being selected
+function disableAnswerButtons(rootEl) {
+  rootEl.querySelectorAll(".answer").forEach((button) => { button.disabled = "disabled"; });
+}
+
+function enableAnswerButtons(rootEl) {
+  rootEl.querySelectorAll(".answer").forEach((button) => { button.disabled = null; });
+}
+
+//  displays question with answers
+function displayQuestion(rootEl, question) {
   rootEl.querySelector("#question").textContent = question.question;
   rootEl.querySelector("#answer1").textContent = question.answer1;
   rootEl.querySelector("#answer2").textContent = question.answer2;
@@ -128,39 +149,60 @@ function displayQuestions(rootEl, question) {
   rootEl.querySelector("#answer4").textContent = question.answer4;
 }
 
-function gameover() {
-  rootEl.appendChild(document.createElement("h1"));
-  rootEl.querySelector("h1").textContent = "Game Over!";
-  rootEl.appendChild(document.createElement("p"));
-  rootEl.querySelector("p").textContent = "Your final score is " + secondsLeft;
+// creates game over page at the end of the game, displays seconds left as score, creates form to input initials 
+function gameover(rootEl) {
+  rootEl.textContent = "";
+
+  title = document.createElement("h1");
+  title.textContent = "Game Over!";
+  rootEl.appendChild(title);
+  
+  message = document.createElement("p");
+  message.textContent = "Your final score is " + secondsLeft;
+  rootEl.appendChild(message);
+  
   var formEl = document.createElement("form");
   rootEl.appendChild(formEl);
+
   var input = document.createElement("input");
   input.name = "initials";
+
   var label= document.createElement("label");
   label.textContent = "Enter initials";
+
   var submit = document.createElement("input");
   submit.type = "submit";
   submit.value = "Submit";
+
   formEl.appendChild(label);
   formEl.appendChild(input);
   formEl.appendChild(submit);
+
   formEl.addEventListener("submit", submitResponse);
 }
 
+// when submit button clicked saves initials and score in local storage and updates userscores key
 function submitResponse(event) {
   event.preventDefault();
+
   var initials = event.target.elements.initials.value;
+  if (initials === "") {
+    return;
+  }
+
   var userscore = {
     name: initials,
     score: secondsLeft 
   };
+
   var userscores = JSON.parse(localStorage.getItem("userscores"));
   if (userscores === null){
     userscores = [];
   }
+
   userscores.push(userscore);
   localStorage.setItem("userscores", JSON.stringify(userscores));
+
   window.open("./viewscores.html")
 }
 

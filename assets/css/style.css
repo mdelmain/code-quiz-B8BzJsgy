@@ -2,14 +2,22 @@ nav{
     display: flex;
     justify-content: space-between;
     flex-direction: row-reverse;
+    font-size: 20px;
+    padding: 10px 20px;
 }
 
-#countdown {
-    
+.game {
+    width: 700px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.game h2 {
+    font-size: 30px;
 }
 
 #scores {
-    color: blueviolet;
+    color: purple;
 }
 
 main p {
@@ -17,10 +25,57 @@ main p {
 }
 
 main button {
-    font-size: 25px;
+    font-size: 20px;
+    color: white;
+    background-color: purple;
+    border:  unset;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 8px;
 }
 
 .answer {
     display: block;
     font-size: 25px;
+}
+
+form {
+    font-size: 25px;
+}
+
+form label {
+    margin-right: 10px;
+}
+
+form input {
+    margin-right: 10px;
+}
+
+form input[type="submit"] {
+    font-size: 20px;
+    color: white;
+    background-color: purple;
+    border:  unset;
+    padding: 10px 10px;
+    border-radius: 8px;
+}
+
+.scoresheet ol {
+    font-size: 25px;
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.scoresheet li  {
+    background-color:lavender;
+    padding: 5px 10px;
+}
+
+.scoresheet li:nth-of-type(2n) {
+    background-color:whitesmoke;
+}
+
+.scoresheet {
+    width: 500px;
+    margin: 0 auto;
 }
